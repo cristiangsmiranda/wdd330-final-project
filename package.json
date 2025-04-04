@@ -1,0 +1,30 @@
+{
+  "name": "wdd330-final-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "live-server streaming-guide",
+    "build": "echo 'Build step here'",
+    "dev": "vite"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristiangsmiranda/wdd330-final-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cristiangsmiranda/wdd330-final-project/issues"
+  },
+  "homepage": "https://github.com/cristiangsmiranda/wdd330-final-project#readme",
+  "description": "",
+  "devDependencies": {
+    "live-server": "^1.2.0",
+    "vite": "^6.2.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  }
+}
