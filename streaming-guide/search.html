@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming Guide</title>
+    <meta name="description" content="streaming-guide page">
+    <meta name="author" content="Cristian Miranda">
+    <meta property="og:title" content="A project page about a streaming-guide">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://cristiangsmiranda.github.io/wdd330/images/profile.webp">
+    <meta property="og:url" content="https://cristiangsmiranda.github.io/wdd330/streaming-guide/index.html">
+    <meta property="og:description" content="The Streaming Guide is a simple and intuitive web application designed to help users quickly find where movies, TV shows, and other content can be streamed. The application eliminates the need for user accounts and focuses on an easy-to-navigate interface that allows users to search for content, browse trending titles, and filter their searches efficiently.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" href="images/hero.jpg" as="image">
+    <link rel="preload" href="styles/streaming-guide.css" as="style">
+    <link rel="stylesheet" href="styles/streaming-guide.css" media="print" onload="this.media='all'">
+    <link rel="preload" href="scripts/streaming-guide.js" as="script">
+    <script src="scripts/streaming-guide.js" defer></script>
+    <link rel="icon" href="favicon.ico">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <img src="images/streaming-guide_logo.jpg" alt="Logo" width="80" loading="lazy">
+                <div>
+                    <h1>Streaming</h1>
+                    <h1>Guide</h1>
+                </div>
+            </div>
+            <button id="menu" class="menu-button" aria-expanded="false" aria-controls="navigation" aria-label="Toggle navigation">
+                <span class="menu-icon"></span>
+                <span class="menu-icon"></span>
+                <span class="menu-icon"></span>
+            </button>
+            <nav class="navigation-home" id="navigation" role="navigation" aria-hidden="true">
+                <div class="box">
+                    <a href="index.html" tabindex="0">Home</a>
+                </div>
+                <div class="box">
+                    <a href="popular.html" tabindex="0">Popular</a>
+                </div>
+                <div class="box">
+                    <a href="search.html" tabindex="0">Search</a>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <section id="search" class="search-section">
+              <h2>Buscar Conteúdo</h2>
+              <input type="text" id="search-input" placeholder="Digite o nome do filme, série ou anime..." />
+        
+              <div class="filters">
+                <select id="type-filter">
+                  <option value="">Tipo</option>
+                  <option value="movie">Filme</option>
+                  <option value="series">Série</option>
+                  <option value="anime">Anime</option>
+                </select>
+        
+                <select id="age-filter">
+                  <option value="">Classificação</option>
+                  <option value="L">Livre</option>
+                  <option value="10">10+</option>
+                  <option value="12">12+</option>
+                  <option value="14">14+</option>
+                  <option value="16">16+</option>
+                  <option value="18">18+</option>
+                </select>
+        
+                <select id="platform-filter">
+                  <option value="">Plataforma</option>
+                  <option value="netflix">Netflix</option>
+                  <option value="prime">Amazon Prime</option>
+                  <option value="disney">Disney+</option>
+                  <option value="hbo">HBO</option>
+                  <option value="crunchyroll">Crunchyroll</option>
+                </select>
+        
+                <select id="genre-filter">
+                  <option value="">Gênero</option>
+                  <option value="romance">Romance</option>
+                  <option value="horror">Terror</option>
+                  <option value="comedy">Comédia</option>
+                  <option value="slice_of_life">Slice of Life</option>
+                </select>
+        
+                <select id="region-filter">
+                  <option value="">Região</option>
+                  <option value="western">Ocidental</option>
+                  <option value="eastern">Oriental</option>
+                </select>
+        
+                <select id="results-filter">
+                  <option value="">Resultados</option>
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                </select>
+              </div>
+        
+              <div class="buttons">
+                <button id="apply-filters">Aplicar Filtros</button>
+                <button id="reset-filters">Limpar Filtros</button>
+              </div>
+            </section>
+        </main>
+        <footer>
+            <section class="information">
+                <p>Streaming Guide</p>
+                <p>Address: St. Byfrost, Golden Kingdom, Asgard</p>
+                <p>Phone: +12 (34) 56789-1011</p>
+                <p>Email: streaming-guide@email.com</p>   
+            </section>
+            <nav class="sociallinks">
+                <a href="https://facebook.com">
+                    <img src="images/facebook.webp" alt="Facebook" loading="lazy">
+                </a>
+                <a href="https://www.linkedin.com/in/cristian-gabriel-miranda-/">
+                    <img src="images/linkedin.webp" alt="Linkedin" loading="lazy">
+                </a>
+                <a href="https://instagram.com">
+                    <img src="images/instagram.webp" alt="Instagram" loading="lazy">
+                </a>
+            </nav>
+            <section class="footer">
+                <p>Streaming Guide Project</p>
+                <p>Cristian G.S. Miranda</p>
+                <p>&copy; <span id="currentyear"></span> Your Library</p>
+                <p id="lastModified"></p>
+            </section>
+        </footer>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const menuButton = document.getElementById("menu");
+                const navigation = document.getElementById("navigation");
+                menuButton.addEventListener("click", function () {
+                    const isExpanded = menuButton.getAttribute("aria-expanded") === "true";
+                    menuButton.setAttribute("aria-expanded", !isExpanded);
+                    menuButton.classList.toggle("active");
+                    navigation.classList.toggle("open");
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
