@@ -15,10 +15,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="preload" href="images/hero.jpg" as="image">
-    <link rel="preload" href="styles/streaming-guide.css" as="style">
     <link rel="stylesheet" href="styles/streaming-guide.css" media="print" onload="this.media='all'">
-    <link rel="preload" href="scripts/streaming-guide.js" as="script">
-    <script src="scripts/streaming-guide.js" defer></script>
+    <script type="module" src="scripts/streaming-guide.js"></script>
     <link rel="icon" href="favicon.ico">
 </head>
 <body>
@@ -49,15 +47,42 @@
             </nav>
         </header>
         <main>
-          <section id="trending" class="trending">
-            <h2>Populares Agora</h2>
-            <div class="trending-list">
-              <!-- Cards animados de filmes/séries (inicialmente estáticos) -->
-              <div class="card"><img src="img1.jpg" alt="Título 1" /></div>
-              <div class="card"><img src="img2.jpg" alt="Título 2" /></div>
-              <div class="card"><img src="img3.jpg" alt="Título 3" /></div>
-            </div>
-          </section>
+            <section class="call-to-action-2">
+                <h2>follow today's most popular movies, series and anime in real time</h2>
+                <a>discover new content to watch and visit the search page to find out which stream has the best content for you</a>
+
+            </section>
+            <section class="highlighted-works movies">
+                <h2>The Most Popular Movies of the Moment</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev-button movies-prev">&#10094;</button>
+                    <div class="carousel-track movies-track"></div>
+                    <button class="carousel-button next-button movies-next">&#10095;</button>
+                </div>
+            </section>
+
+            <section class="highlighted-works series">
+                <h2>The Most Popular Series of the Moment</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev-button series-prev">&#10094;</button>
+                    <div class="carousel-track series-track"></div>
+                    <button class="carousel-button next-button series-next">&#10095;</button>
+                </div>
+            </section>
+            
+            <section class="highlighted-works animes">
+                <h2>The Most Popular Animes of the Moment</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev-button animes-prev">&#10094;</button>
+                    <div class="carousel-track animes-track"></div>
+                    <button class="carousel-button next-button animes-next">&#10095;</button>                    
+                </div>
+            </section>
+                       
+            <section class="call-to-action-2">
+                <h2>Search and find where to watch what you want to watch</h2>
+                <a href="search.html">Click here</a>
+            </section>
         </main>
         <footer>
             <section class="information">
@@ -97,5 +122,7 @@
             });
         </script>
     </div>
+    <script type="module" src="./tmdb.js"></script>
+    <script type="module" src="./scripts/anime.js"></script>
 </body>
 </html>

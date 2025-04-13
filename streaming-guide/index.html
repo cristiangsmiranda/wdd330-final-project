@@ -15,10 +15,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="preload" href="images/hero.jpg" as="image">
-    <link rel="preload" href="styles/streaming-guide.css" as="style">
     <link rel="stylesheet" href="styles/streaming-guide.css" media="print" onload="this.media='all'">
-    <link rel="preload" href="scripts/streaming-guide.js" as="script">
-    <script src="scripts/streaming-guide.js" defer></script>
+    <script type="module" src="scripts/streaming-guide.js"></script>
     <link rel="icon" href="favicon.ico">
 </head>
 <body>
@@ -53,27 +51,29 @@
                 <img src="images/hero.jpg" alt="Welcome" width="1200" loading="lazy" class="hero-image">
                 <h2 class="welcome-message">Welcome to Streaming Guide!<br>Find and discover the best content for you to watch</h2>
             </section>
-            <section class="highlighted-works series">
-                <h2>The Most Popular Series of the Moment</h2>
-                <div class="card">
-                    <div class="image-container"></div>
+            <br>
+            <section class="call-to-action">
+                <h2>Tired of wanting to watch something but not knowing where to find it?</h2>
+                <a href="search.html">Search and find where to watch what you want to watch</a>
+            </section>
+            <br>
+            <section class="call-to-action-2">
+                <h2>Here you'll find the most popular content of the moment!</h2>
+                <div class="grid-wrapper">
+                    <section class="grid">
+                        <div class="grid-item">
+                        <!-- Será preenchido com plataformas -->
+                        </div>
+                    </section>
+                    <!-- Grid 2 -->
+                    <section class="grid">
+                        <div class="grid-item">
+                        <!-- Será preenchido com plataformas -->
+                        </div>
+                    </section>
+                    <a href="popular.html">Click here to see the most popular films, series and anime of the moment</a>
                 </div>
             </section>
-            
-            <section class="highlighted-works movies">
-                <h2>The Most Popular Movies of the Moment</h2>
-                <div class="card">
-                    <div class="image-container"></div>
-                </div>
-            </section>
-            
-            <section class="highlighted-works animes">
-                <h2>The Most Popular Animes of the Moment</h2>
-                <div class="card">
-                    <div class="image-container"></div>
-                </div>
-            </section>
-            
         </main>
         <footer>
             <section class="information">
@@ -114,7 +114,29 @@
         </script>
     </div>
     <script type="module" src="./tmdb.js"></script>
-    <script type="module" src="./scripts/anime.js"></script>
+    <script type="module">
+    import { getRandomPopularContent } from "./tmdb.js";
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const grids = document.querySelectorAll(".grid");
+
+          for (const grid of grids) {
+            const items = grid.querySelectorAll(".grid-item");
+            const content = await getRandomPopularContent();
+            if (!content) continue;
+
+            if (items[0]) {
+            items[0].innerHTML = `
+                <h3>${content.title}</h3>
+                <img src="${content.image}" alt="${content.title}">
+                <h3>Available on</h3>
+                <p>${content.platforms.join(", ")}</p>
+              `;
+            }
+        }
+    });
+    </script>
+      
 </body>
 </html>
 

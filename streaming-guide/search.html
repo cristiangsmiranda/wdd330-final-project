@@ -15,10 +15,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="preload" href="images/hero.jpg" as="image">
-    <link rel="preload" href="styles/streaming-guide.css" as="style">
     <link rel="stylesheet" href="styles/streaming-guide.css" media="print" onload="this.media='all'">
-    <link rel="preload" href="scripts/streaming-guide.js" as="script">
-    <script src="scripts/streaming-guide.js" defer></script>
+    <script type="module" src="scripts/streaming-guide.js"></script>
     <link rel="icon" href="favicon.ico">
 </head>
 <body>
@@ -50,62 +48,78 @@
         </header>
         <main>
             <section id="search" class="search-section">
-              <h2>Buscar Conteúdo</h2>
-              <input type="text" id="search-input" placeholder="Digite o nome do filme, série ou anime..." />
+              <h2>Search Content</h2>
+              <input type="text" id="search-input" placeholder="Type in the name of the movie, series or anime..." />
         
               <div class="filters">
                 <select id="type-filter">
-                  <option value="">Tipo</option>
-                  <option value="movie">Filme</option>
-                  <option value="series">Série</option>
-                  <option value="anime">Anime</option>
+                    <option value="">Type</option>
+                    <option value="movie">Movie</option>
+                    <option value="series">Series</option>
+                    <option value="anime">Anime</option>
                 </select>
-        
-                <select id="age-filter">
-                  <option value="">Classificação</option>
-                  <option value="L">Livre</option>
-                  <option value="10">10+</option>
-                  <option value="12">12+</option>
-                  <option value="14">14+</option>
-                  <option value="16">16+</option>
-                  <option value="18">18+</option>
+
+                <select id="genre-movie-filter">
+                    <option value="">Genre (Movies)</option>
+                    <option value="28">Action</option>
+                    <option value="12">Adventure</option>
+                    <option value="16">Animation</option>
+                    <option value="35">Comedy</option>
+                    <option value="80">Crime</option>
+                    <option value="99">Documentary</option>
+                    <option value="18">Drama</option>
+                    <option value="10751">Family</option>
+                    <option value="14">Fantasy</option>
+                    <option value="36">History</option>
+                    <option value="27">Horror</option>
+                    <option value="10402">Music</option>
+                    <option value="9648">Mystery</option>
+                    <option value="10749">Romance</option>
+                    <option value="878">Science Fiction</option>
+                    <option value="10770">TV Movie</option>
+                    <option value="53">Thriller</option>
+                    <option value="10752">War</option>
+                    <option value="37">Western</option>
                 </select>
-        
-                <select id="platform-filter">
-                  <option value="">Plataforma</option>
-                  <option value="netflix">Netflix</option>
-                  <option value="prime">Amazon Prime</option>
-                  <option value="disney">Disney+</option>
-                  <option value="hbo">HBO</option>
-                  <option value="crunchyroll">Crunchyroll</option>
+
+                <select id="genre-series-filter">
+                    <option value="">Genre (Series)</option>
+                    <option value="10759">Action & Adventure</option>
+                    <option value="16">Animation</option>
+                    <option value="35">Comedy</option>
+                    <option value="80">Crime</option>
+                    <option value="99">Documentary</option>
+                    <option value="18">Drama</option>
+                    <option value="10751">Family</option>
+                    <option value="10762">Kids</option>
+                    <option value="9648">Mystery</option>
+                    <option value="10763">News</option>
+                    <option value="10764">Reality</option>
+                    <option value="10765">Sci-Fi & Fantasy</option>
+                    <option value="10766">Soap</option>
+                    <option value="10767">Talk</option>
+                    <option value="10768">War & Politics</option>
+                    <option value="37">Western</option>
                 </select>
-        
-                <select id="genre-filter">
-                  <option value="">Gênero</option>
-                  <option value="romance">Romance</option>
-                  <option value="horror">Terror</option>
-                  <option value="comedy">Comédia</option>
-                  <option value="slice_of_life">Slice of Life</option>
-                </select>
-        
-                <select id="region-filter">
-                  <option value="">Região</option>
-                  <option value="western">Ocidental</option>
-                  <option value="eastern">Oriental</option>
-                </select>
-        
+              
+                <select id="anime-genre-filter"></select>
+                  
+              
                 <select id="results-filter">
-                  <option value="">Resultados</option>
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="30">30</option>
+                    <option value="">Results</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
                 </select>
-              </div>
+              </div>              
         
               <div class="buttons">
-                <button id="apply-filters">Aplicar Filtros</button>
-                <button id="reset-filters">Limpar Filtros</button>
+                <button id="apply-filters">Apply filters</button>
+                <button id="reset-filters">Cleaning Filters</button>
               </div>
+
+              <div id="results-container" class="results-container"></div>
+
             </section>
         </main>
         <footer>
@@ -146,5 +160,6 @@
             });
         </script>
     </div>
+    <script type="module" src="./scripts/anime-genres-populate.js"></script>
 </body>
 </html>
