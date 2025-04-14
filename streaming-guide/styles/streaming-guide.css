@@ -409,8 +409,11 @@ h2 {
 }
 
 .result-image {
-  width: 120px;
-  height: auto;
+  max-width: 100px;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  object-position: center;
   border-radius: 8px;
 }
 
@@ -421,6 +424,68 @@ h2 {
 .result-info h3 {
   margin-top: 0;
 }
+
+
+/* Estilos gerais para os botões de paginação */
+.pagination-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.pagination-buttons span{
+  color: white;
+}
+
+/* Botões de navegação */
+.pagination-buttons button {
+  background-color: #B60000; /* Cor de fundo azul */
+  color: white; /* Texto branco */
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Efeito de hover para os botões */
+.pagination-buttons button:hover {
+  background-color: #750202; /* Cor mais escura para o efeito de hover */
+  transform: translateY(-2px); /* Leve elevação ao passar o mouse */
+}
+
+/* Efeito de foco para acessibilidade */
+.pagination-buttons button:focus {
+  outline: 3px solid #b30000; /* Adiciona uma borda azul para o foco */
+}
+
+/* Desabilitar os botões quando não for possível navegar */
+.pagination-buttons button:disabled {
+  background-color: #deb0b0; /* Cor mais suave para botões desabilitados */
+  color: #000000;
+  cursor: not-allowed; /* Muda o cursor para "não permitido" */
+  transform: none; /* Retira o efeito de elevação */
+}
+
+/* Texto dentro do botão */
+.pagination-buttons button span {
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+/* Adiciona um pouco de espaçamento entre os botões e o texto */
+.pagination-buttons button span {
+  padding-top: 5px;
+}
+
+
 
 
 footer {
@@ -475,4 +540,15 @@ footer img {
   .carousel-card {
     min-width: calc(100% / 2); /* mostra 2 cards no mobile */
   }
+
+  .pagination-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pagination-buttons button {
+    width: 100%;
+    padding: 12px;
+  }
+
 }

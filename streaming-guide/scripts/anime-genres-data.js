@@ -28,11 +28,17 @@ export const animeGenres = [
   "Josei"
 ];
 
-export async function fetchAnimesByGenre(genre, limit = 10) {
+export async function fetchAnimesByGenre(genre, perPage = 10, search = "", page = 1) {
+  // Atualizando a consulta GraphQL para permitir gênero nulo ou vazio
   const query = `
-    query ($genre: String, $perPage: Int) {
-      Page(perPage: $perPage) {
-        media(genre_in: [$genre], type: ANIME, sort: POPULARITY_DESC) {
+    query ($genre: String, $search: String, $page: Int, $perPage: Int) {
+      Page(page: $page, perPage: $perPage) {
+        media(
+          ${genre ? `genre_in: [$genre],` : ""}
+          search: $search,
+          type: ANIME,
+          sort: POPULARITY_DESC
+        ) {
           title {
             romaji
             english
@@ -47,9 +53,12 @@ export async function fetchAnimesByGenre(genre, limit = 10) {
     }
   `;
 
+  // Variáveis para a requisição
   const variables = {
-    genre,
-    perPage: limit
+    genre: genre || null,  // Permite que gênero seja null ou vazio
+    search: search || null,  // Permite que pesquisa seja nula
+    page,
+    perPage
   };
 
   try {

@@ -1,15 +1,15 @@
 import { fetchAnimesByGenre } from "./anime-genres-data.js";
 
-// =======================
-// Helper: DOM Ready
-// =======================
 document.addEventListener("DOMContentLoaded", () => {
   initImageCarousel();
   highlightCurrentNav();
   setupFilterEvents();
   setupResetButton();
+  setupSearchEnterKey();
   updateFooterInfo();
 });
+
+let currentPage = 1;
 
 // =======================
 // Image Carousel
@@ -68,6 +68,23 @@ function setupResetButton() {
       const el = document.getElementById(id);
       if (el) el.value = "";
     });
+
+    currentPage = 1;
+  });
+}
+
+// =======================
+// Setup Enter Key
+// =======================
+function setupSearchEnterKey() {
+  const input = document.getElementById("search-input");
+  const applyBtn = document.getElementById("apply-filters");
+  if (!input || !applyBtn) return;
+
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      applyBtn.click();
+    }
   });
 }
 
@@ -94,14 +111,17 @@ function setupFilterEvents() {
     const resultsLimit = document.getElementById("results-filter").value || 10;
 
     if (!query && !type && !genre) {
-      alert("Preencha pelo menos um filtro para buscar.");
+      alert("Fill in at least one filter to search.");
       return;
     }
 
+    currentPage = 1;
+
     if (type === "anime") {
-      await fetchFromAnilist(query, genre, resultsLimit);
+      await fetchFromAnilist(query, genre, resultsLimit, currentPage);
     } else {
-      await fetchFromTMDb(query, type, genre, resultsLimit);
+      const resolvedType = type || "tv";
+      await fetchFromTMDb(query, resolvedType, genre, resultsLimit, currentPage);
     }
   });
 }
@@ -109,10 +129,10 @@ function setupFilterEvents() {
 // =======================
 // Fetch from Anilist
 // =======================
-async function fetchFromAnilist(query, genre, limit = 10) {
-  const animes = await fetchAnimesByGenre(genre, limit, query);
+async function fetchFromAnilist(query, genre, limit = 10, page = 1) {
+  const animes = await fetchAnimesByGenre(genre || "", limit, query, page); // Modificado para permitir busca sem gênero
   if (!animes || animes.length === 0) {
-    alert("Nenhum resultado encontrado.");
+    alert("No results found.");
     return;
   }
 
@@ -134,7 +154,7 @@ async function fetchFromAnilist(query, genre, limit = 10) {
     })
   );
 
-  renderResults(formatted, "anilist");
+  renderResults(formatted, "anilist", limit);
 }
 
 // =======================
@@ -155,22 +175,22 @@ async function fetchAnimePlatformsFromTMDb(title) {
     const providersRes = await fetch(providersUrl);
     const providersData = await providersRes.json();
 
-    const country = 'US'; // ou 'BR' se quiser usar Brasil
+    const country = 'US';
     const regionData = providersData.results?.[country];
-    
+
     if (!regionData) return [];
-    
+
     const providerList = [
       ...(regionData.flatrate || []),
       ...(regionData.buy || []),
-      ...(regionData.rent || [])
+      ...(regionData.rent || []),
     ];
-    
+
     const uniqueProviders = [...new Set(providerList.map(p => p.provider_name))];
-    
+
     return uniqueProviders;
-      } catch (err) {
-    console.error("Erro ao buscar plataformas de anime:", err);
+  } catch (err) {
+    console.error("Error when searching for anime platforms:", err);
     return [];
   }
 }
@@ -178,7 +198,7 @@ async function fetchAnimePlatformsFromTMDb(title) {
 // =======================
 // Fetch from TMDb (Movies and Series)
 // =======================
-async function fetchFromTMDb(query, type, genre, limit = 10) {
+async function fetchFromTMDb(query, type, genre, limit = 10, page = 1) {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
   const useDiscover = genre || !query;
@@ -187,7 +207,7 @@ async function fetchFromTMDb(query, type, genre, limit = 10) {
   const params = new URLSearchParams({
     api_key: apiKey,
     language: "en-US",
-    page: "1",
+    page: page.toString(),
   });
 
   if (useDiscover) {
@@ -203,7 +223,7 @@ async function fetchFromTMDb(query, type, genre, limit = 10) {
     const data = await response.json();
 
     if (!data.results || data.results.length === 0) {
-      alert("Nenhum resultado encontrado.");
+      alert("No results found.");
       return;
     }
 
@@ -230,27 +250,30 @@ async function fetchFromTMDb(query, type, genre, limit = 10) {
 
           return { ...item, platforms, certification };
         } catch (error) {
-          console.warn("Erro ao buscar detalhes:", error);
+          console.warn("Error when searching for details:", error);
           return { ...item, platforms: [], certification: "" };
         }
       })
     );
 
-    renderResults(detailedItems, "tmdb");
+    renderResults(detailedItems, "tmdb", limit);
   } catch (err) {
-    console.error("Erro ao buscar na TMDb:", err);
-    alert("Ocorreu um erro ao buscar os dados.");
+    console.error("Error when searching TMDb:", err);
+    alert("There was an error fetching the data.");
   }
 }
 
 // =======================
-// Render Results
+// Render Results (com paginação dupla)
 // =======================
-function renderResults(items, source) {
+function renderResults(items, source, limit = 10) {
   const container = document.getElementById("results-container");
   if (!container) return;
 
   container.innerHTML = "";
+
+  // Paginação no topo
+  container.appendChild(createPaginationButtons(items.length >= limit));
 
   items.forEach((item) => {
     let title = "";
@@ -294,5 +317,70 @@ function renderResults(items, source) {
 
     container.appendChild(card);
   });
+
+  // Paginação no final
+  container.appendChild(createPaginationButtons(items.length >= limit));
 }
 
+// =======================
+// Criação de botões de paginação
+// =======================
+function createPaginationButtons(hasNextPage = true) {
+  const pagination = document.createElement("div");
+  pagination.className = "pagination-buttons";
+
+  pagination.innerHTML = `
+    <button id="prev-page" ${currentPage === 1 ? "disabled" : ""}>← Voltar</button>
+    <span>Page ${currentPage}</span>
+    <button id="next-page" ${!hasNextPage ? "disabled" : ""}>→ Próximo</button>
+  `;
+
+  // Eventos
+  setTimeout(() => {
+    const prev = pagination.querySelector("#prev-page");
+    const next = pagination.querySelector("#next-page");
+
+    if (prev) {
+      prev.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          reapplyFilters();
+        }
+      });
+    }
+
+    if (next) {
+      next.addEventListener("click", () => {
+        currentPage++;
+        reapplyFilters();
+      });
+    }
+  }, 0);
+
+  return pagination;
+}
+
+// =======================
+// Reapply Filters (Pagination)
+// =======================
+function reapplyFilters() {
+  const query = document.getElementById("search-input").value.trim();
+  const type = document.getElementById("type-filter").value;
+  let genre = "";
+
+  if (type === "movie") {
+    genre = document.getElementById("genre-movie-filter").value;
+  } else if (type === "series") {
+    genre = document.getElementById("genre-series-filter").value;
+  } else if (type === "anime") {
+    genre = document.getElementById("anime-genre-filter").value;
+  }
+
+  const resultsLimit = document.getElementById("results-filter").value || 10;
+
+  if (type === "anime") {
+    fetchFromAnilist(query, genre, resultsLimit, currentPage);
+  } else {
+    fetchFromTMDb(query, type, genre, resultsLimit, currentPage);
+  }
+}
